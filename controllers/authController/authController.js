@@ -12,7 +12,7 @@ module.exports = {
             if (!(firstName || lastName || email || password)) {
                 return res.status(400).json({
                     success: false,
-                    message: "Missing Compulsory Data"
+                    error: "Missing Compulsory Data"
                 });
             }
             let existingUser = await User.findOne({
@@ -22,7 +22,7 @@ module.exports = {
             if (existingUser) {
                 return res.status(401).json({
                     success: false,
-                    message: "User already registerd with this email"
+                    error: "User already registerd with this email"
                 })
             }
             let encryptedPass = await bcrypt.hash(password, 7);
@@ -40,7 +40,7 @@ module.exports = {
             console.log("Error: ", error);
             res.status(500).json({
                 success: false,
-                message: "Internal Server Error"
+                error: "Internal Server Error"
             })
         }
     },
@@ -50,7 +50,7 @@ module.exports = {
             if (!(email || password)) {
                 return res.status(400).json({
                     success: false,
-                    message: "Missing necessary details"
+                    error: "Missing necessary details"
                 });
             }
             let user = await User.findOne({
@@ -63,15 +63,19 @@ module.exports = {
 
                 return res.status(200).json({
                     success: true,
-                    message: "Log in successful",
+                    message: "Login successful",
                     user, token
                 })
             }
+            res.status(401).json({
+                success: false,
+                error: "Invalid credentials"
+            })
         } catch (error) {
             console.log("Error: ", error);
             res.status(500).json({
                 success: false,
-                message: "Internal Server Error"
+                error: "Internal Server Error"
             })
         }
     }
