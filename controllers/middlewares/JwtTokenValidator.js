@@ -1,4 +1,4 @@
-const { verifyToken } = require("../services/tokenService");
+const { verifyToken } = require("../../backend/services/tokenService");
 
 const validateToken = (req, res, next) => {
     const token = req.get("Authorization");
