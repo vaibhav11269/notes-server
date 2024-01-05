@@ -1,10 +1,11 @@
-const { verifyToken } = require("../../backend/services/tokenService");
+const { verifyToken } = require("../services/tokenService");
 
 const validateToken = (req, res, next) => {
     const token = req.get("Authorization");
     if (!token) return res.status(401).json({ message: "Token is Invalid" });
     return verifyToken(token)
         .then((data) => {
+            // console.log("Token dtaa", data)
             req.userId = data.userId;
             next();
         })
